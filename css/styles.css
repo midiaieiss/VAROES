@@ -6,13 +6,111 @@
 }
 
 body {
-    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxkZWZzPgo8cGF0dGVybiBpZD0iY2Ftb3VmbGFnZSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiPgo8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzNhNGEzYSIvPgo8cGF0aCBkPSJNMjAsMTBMMzAsMjBMMjAsNDBMMTAsNDBaIiBmaWxsPSIjMmEzNzJhIi8+CjxwYXRoIGQ9Ik02MCwyTDgwLDE1TDcwLDM1TDUwLDMwWiIgZmlsbD0iIzUwNmI0NiIvPgo8cGF0aCBkPSJNOTAsMzBMODUsNTBMNjUsNDVMNzAsMjVaIiBmaWxsPSIjNDE1YjNkIi8+CjxwYXRoIGQ9Ik0xNSw2MUwyNSw3MEwxNSw4NUw1LDgwWiIgZmlsbD0iIzJkM2YyOSIvPgo8cGF0aCBkPSJNNDUsNzVMNjUsODBMNjAsOTVMNDAsOTBaIiBmaWxsPSIjMmEzNzJhIi8+CjxwYXRoIGQ9Ik03NSw2MEw4NSw3MEw3NSw4NUw2NSw4MFoiIGZpbGw9IiM0NjVmNDIiLz4KPGVsbGlwc2UgY3g9IjM1IiBjeT0iMjUiIHJ4PSI4IiByeT0iNSIgZmlsbD0iIzRhNjI0NiIvPgo8ZWxsaXBzZSBjeD0iMTUiIGN5PSI4NSIgcng9IjYiIHJ5PSI0IiBmaWxsPSIjMzc0ZDMzIi8+CjxlbGxpcHNlIGN4PSI4NSIgY3k9IjQ1IiByeD0iNyIgcnk9IjMiIGZpbGw9IiM0NzYwNDMiLz4KPGVsbGlwc2UgY3g9IjY1IiBjeT0iNzAiIHJ4PSI1IiByeT0iNiIgZmlsbD0iIzNiNGQzNyIvPgo8L3BhdHRlcm4+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9InVybCgjY2Ftb3VmbGFnZSkiLz4KPC9zdmc+'), 
-                linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    background: url('../images/exercito.jpg'), linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
     background-attachment: fixed;
-    background-size: 200px 200px, cover;
+    background-size: cover, cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     min-height: 100vh;
     padding: 10px;
     color: #ffffff;
+}
+
+/* BANNERS LATERAIS FIXOS - APARECEM APENAS APÓS O HERO */
+.side-banners {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px; /* Aumentado de 150px para 200px */
+    height: 700px; /* Aumentado de 600px para 700px */
+    z-index: 50; /* Reduzido de 100 para 50 para não sobrepor conteúdo importante */
+    pointer-events: none;
+    opacity: 0; /* Inicia invisível */
+    transition: opacity 0.5s ease-in-out;
+}
+
+.side-banner-left {
+    left: 10px; /* Ajustado para dar mais espaço */
+}
+
+.side-banner-right {
+    right: 10px; /* Ajustado para dar mais espaço */
+}
+
+.banner-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px; /* Aumentado para acompanhar o tamanho maior */
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    border: 4px solid #ff6b00; /* Borda mais espessa */
+    pointer-events: auto;
+    transition: all 0.4s ease;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.banner-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 50px rgba(255, 107, 0, 0.7);
+    border-color: #ffaa00;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.banner-image:hover {
+    filter: brightness(1.2) contrast(1.1) saturate(1.1);
+}
+
+/* Container principal ajustado para dar espaço aos banners */
+.main-content {
+    max-width: 900px; /* Aumentado de 800px */
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 0 20px; /* Adicionado padding lateral */
+}
+
+/* Navbar - VERDE COM LETRAS AMARELAS */
+.navbar {
+    background: linear-gradient(135deg, #1a4c1a 0%, #2d5f2d 100%);
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(45, 95, 45, 0.4);
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #4a7c4a;
+}
+
+.logo {
+    height: 120px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    object-fit: contain;
+    border: 3px solid #ffdd00;
+    box-shadow: 0 0 20px rgba(255, 221, 0, 0.4);
+    background-color: #ffffff;
+    padding: 8px;
+}
+
+.church-name {
+    color: #ffdd00;
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 /* Hero Section */
@@ -94,41 +192,6 @@ body {
     font-size: 3.5rem;
     opacity: 0.9;
     filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.8));
-}
-
-/* Navbar - VERDE COM LETRAS AMARELAS */
-.navbar {
-    background: linear-gradient(135deg, #1a4c1a 0%, #2d5f2d 100%);
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(45, 95, 45, 0.4);
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #4a7c4a;
-}
-
-.logo {
-    height: 120px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    object-fit: contain;
-    border: 3px solid #ffdd00;
-    box-shadow: 0 0 20px rgba(255, 221, 0, 0.4);
-}
-
-.church-name {
-    color: #ffdd00;
-    font-size: 32px;
-    font-weight: 900;
-    margin-bottom: 10px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
 }
 
 /* Container principal */
@@ -412,7 +475,56 @@ body {
     background-clip: text;
 }
 
-/* Responsive */
+/* MEDIA QUERIES PARA RESPONSIVIDADE DOS BANNERS */
+@media (max-width: 1600px) {
+    .side-banners {
+        width: 180px;
+        height: 650px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .side-banners {
+        width: 160px;
+        height: 600px;
+    }
+    
+    .side-banner-left {
+        left: 8px;
+    }
+    
+    .side-banner-right {
+        right: 8px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .side-banners {
+        width: 140px;
+        height: 550px;
+    }
+    
+    .side-banner-left {
+        left: 5px;
+    }
+    
+    .side-banner-right {
+        right: 5px;
+    }
+}
+
+/* Esconde os banners em telas menores para não atrapalhar */
+@media (max-width: 1024px) {
+    .side-banners {
+        display: none;
+    }
+    
+    .main-content {
+        padding: 0 15px;
+    }
+}
+
+/* Responsive padrão */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.8rem;
@@ -435,6 +547,10 @@ body {
     }
     
     .container {
+        padding: 0 10px;
+    }
+    
+    .main-content {
         padding: 0 10px;
     }
     
@@ -487,7 +603,52 @@ body {
     }
 }
 
-/* Animações */
+/* ANIMAÇÕES DOS BANNERS */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px) translateY(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(-50%);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px) translateY(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(-50%);
+    }
+}
+
+.side-banner-left.show-banner {
+    animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.side-banner-right.show-banner {
+    animation: slideInRight 0.8s ease-out 0.2s forwards;
+}
+
+/* Efeito de pulsação suave para os banners */
+@keyframes gentle-pulse {
+    0%, 100% {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    }
+    50% {
+        box-shadow: 0 15px 40px rgba(255, 107, 0, 0.4);
+    }
+}
+
+.banner-container {
+    animation: gentle-pulse 5s ease-in-out infinite;
+}
+
+/* Animações gerais */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -534,11 +695,11 @@ body {
 }
 
 /* Efeitos de carregamento para imagens */
-.logo, .contact-img {
+.logo, .contact-img, .banner-image {
     transition: all 0.4s ease;
 }
 
-.logo:not([src]), .contact-img:not([src]) {
+.logo:not([src]), .contact-img:not([src]), .banner-image:not([src]) {
     opacity: 0.8;
 }
 
