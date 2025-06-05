@@ -625,4 +625,4 @@ function initDateCountdown() {
 // LOG DE INICIALIZAÇÃO
 // =================================================
 
-console.log('🔥 Site Encontro de Varões totalmente carregado! 🛡️');
+console.log('Site totalmente carregado!');
