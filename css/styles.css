@@ -718,6 +718,7 @@ body {
 .footer {
     background: var(--green-gradient);
     border-top: 3px solid var(--accent-green);
+    /*border-radius: var(--border-radius) var(--border-radius) 0 0;*/
     margin-top: 50px;
     padding: 40px 0 0 0;
     color: #ffffff;
@@ -784,7 +785,7 @@ body {
     text-align: left;
 }
 
-/* Seção do mapa - lado direito MAXIMIZADO */
+/* Seção do mapa - lado direito */
 .footer-map-section {
     background: none;
     padding: 0;
@@ -807,28 +808,36 @@ body {
 
 .footer-map-container {
     width: 100%;
-    height: clamp(160px, 20vw, 220px);
+    height: clamp(200px, 25vw, 280px);
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     border: 3px solid var(--accent-green);
     position: relative;
     background: rgba(26, 76, 26, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0; /* Mudança: garantir alinhamento à direita */
 }
 
-.footer-map-placeholder {
-    color: var(--accent-yellow);
-    font-size: clamp(14px, 2.2vw, 16px);
-    font-weight: 700;
-    text-align: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    border: 2px dashed var(--accent-yellow);
+.footer-map-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--yellow-gradient);
+    color: var(--dark-black);
+    padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px);
+    border-radius: clamp(15px, 2.5vw, 20px);
+    font-size: clamp(11px, 1.8vw, 13px);
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.footer-map-link:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-yellow);
 }
 
 .footer-map-iframe {
@@ -836,6 +845,89 @@ body {
     height: 100%;
     border: none;
     border-radius: var(--border-radius);
+    position: relative;
+    z-index: 1;
+}
+
+/* =================================================
+   FOOTER - SEÇÃO DE REDES SOCIAIS
+================================================= */
+.footer-social-section {
+    margin-top: clamp(25px, 4vw, 35px);
+    padding-top: clamp(20px, 3vw, 25px);
+    border-top: 2px solid var(--accent-green);
+}
+
+.footer-social-title {
+    color: var(--accent-yellow);
+    font-size: clamp(18px, 3vw, 22px);
+    font-weight: 900;
+    margin-bottom: clamp(15px, 2.5vw, 20px);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: var(--text-shadow);
+    text-align: left;
+}
+
+.footer-social-links {
+    display: flex;
+    gap: clamp(15px, 3vw, 20px);
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(50px, 8vw, 60px);
+    height: clamp(50px, 8vw, 60px);
+    background: var(--dark-gradient);
+    border-radius: 50%;
+    text-decoration: none;
+    color: var(--text-white);
+    font-size: clamp(24px, 4vw, 28px);
+    border: 2px solid var(--accent-green);
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    transition: var(--transition);
+    z-index: 1;
+}
+
+.social-link:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    border-color: var(--accent-yellow);
+}
+
+.instagram-link:hover::before {
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+}
+
+.youtube-link:hover::before {
+    background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+}
+
+.social-icon {
+    position: relative;
+    z-index: 2;
+    transition: var(--transition);
+}
+
+.instagram-link:hover .social-icon,
+.youtube-link:hover .social-icon {
+    color: white;
 }
 
 /* =================================================
@@ -845,6 +937,7 @@ body {
     background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
     padding: clamp(20px, 3vw, 25px) 0;
     border-top: 2px solid var(--accent-yellow);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
     width: 100%;
 }
 
@@ -875,99 +968,19 @@ body {
 /* =================================================
    FOOTER - RESPONSIVIDADE
 ================================================= */
-/* Melhorias gerais para mobile */
 @media (max-width: 768px) {
-    /* Ajustes no body para melhor performance */
-    body {
-        -webkit-text-size-adjust: 100%;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        overflow-x: hidden;
-    }
-    
-    /* Hero section mobile */
-    .hero {
-        min-height: 60vh;
-        padding: 2rem 1rem;
-    }
-    
-    .hero-content h1 {
-        font-size: 2.5rem;
-        line-height: 1.2;
-    }
-    
-    .hero-subtitle {
-        font-size: 1rem;
-        margin: 1rem 0;
-    }
-    
-    .hero-description {
-        font-size: 1rem;
-        line-height: 1.6;
-        padding: 0 1rem;
-    }
-    
-    .hero-icons {
-        margin-top: 2rem;
-        gap: 1rem;
-    }
-    
-    .hero-icon {
-        font-size: 2rem;
-    }
-    
-    /* Main content mobile */
-    .main-content {
-        padding: 1rem;
-        max-width: 100%;
-    }
-    
-    /* Cards mobile */
-    .card {
-        margin: 1rem 0;
-        padding: 1.5rem;
-        border-radius: 15px;
-    }
-    
-    /* Event info mobile */
-    .event-info {
-        padding: 1.5rem;
-    }
-    
-    .event-details {
-        gap: 1rem;
-    }
-    
-    .detail-item {
-        padding: 1rem;
-        font-size: 0.9rem;
-    }
-    
-    /* Gallery mobile optimizations */
-    .gallery-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 15px;
-        margin: 1rem 0;
-    }
-    
-    .gallery-wrapper {
-        touch-action: pan-x;
-        -webkit-overflow-scrolling: touch;
-    }
-    
     .footer-content {
         grid-template-columns: 1fr;
         gap: clamp(25px, 4vw, 30px);
         margin-bottom: 20px;
-        padding: 0 clamp(15px, 3vw, 20px); /* Mudança: padding normal em mobile */
+        padding: 0 clamp(15px, 3vw, 20px);
     }
     
     .footer-church-info,
     .footer-map-section {
         text-align: left;
         width: 100%;
-        padding: 0; /* Mudança: remover padding lateral em mobile */
+        padding: 0;
     }
     
     .footer-title,
@@ -976,11 +989,28 @@ body {
     }
     
     .footer-map-container {
-        height: clamp(140px, 25vw, 180px);
+        height: clamp(160px, 22vw, 200px);
     }
     
     .footer-address {
         text-align: left;
+    }
+    
+    .footer-social-section {
+        margin-top: 20px;
+        padding-top: 15px;
+        text-align: left;
+    }
+    
+    .footer-social-links {
+        justify-content: flex-start;
+        gap: 12px;
+    }
+    
+    .social-link {
+        width: clamp(45px, 7vw, 50px);
+        height: clamp(45px, 7vw, 50px);
+        font-size: clamp(20px, 3.5vw, 24px);
     }
 }
 
@@ -1000,6 +1030,23 @@ body {
     
     .footer-address p {
         font-size: clamp(12px, 2.5vw, 14px);
+    }
+    
+    .footer-social-links {
+        gap: 10px;
+    }
+    
+    .social-link {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .footer-map-link {
+        top: 5px;
+        right: 5px;
+        padding: 6px 10px;
+        font-size: 10px;
     }
 }
 
