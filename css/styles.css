@@ -718,7 +718,7 @@ body {
 .footer {
     background: var(--green-gradient);
     border-top: 3px solid var(--accent-green);
-    /*border-radius: var(--border-radius) var(--border-radius) 0 0;*/
+    /*border-radius: var(--border-radius) var(--border-radius) 0 0;*/ /* Cantos arredondados superiores */
     margin-top: 50px;
     padding: 40px 0 0 0;
     color: #ffffff;
@@ -812,9 +812,10 @@ body {
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    border: 3px solid var(--accent-green);
+    border: 3px solid var(--accent-green); /* Mesma cor verde do corpo */
     position: relative;
     background: rgba(26, 76, 26, 0.2);
+    margin-right: 0;
 }
 
 .footer-map-link {
@@ -855,7 +856,7 @@ body {
 .footer-social-section {
     margin-top: clamp(25px, 4vw, 35px);
     padding-top: clamp(20px, 3vw, 25px);
-    border-top: 2px solid var(--accent-green);
+    border-top: 2px solid var(--accent-green); /* Mesma cor verde do corpo */
 }
 
 .footer-social-title {
@@ -886,7 +887,7 @@ body {
     text-decoration: none;
     color: var(--text-white);
     font-size: clamp(24px, 4vw, 28px);
-    border: 2px solid var(--accent-green);
+    border: 2px solid var(--accent-green); /* Mesma cor verde do corpo */
     transition: var(--transition);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
@@ -936,8 +937,8 @@ body {
 .footer-bottom {
     background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
     padding: clamp(20px, 3vw, 25px) 0;
-    border-top: 2px solid var(--accent-yellow);
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    border-top: 2px solid var(--accent-green); /* Mesma cor verde do corpo */
+    border-radius: 0 0 var(--border-radius) var(--border-radius); /* Cantos arredondados inferiores */
     width: 100%;
 }
 
