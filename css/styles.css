@@ -713,7 +713,7 @@ body {
 }
 
 /* =================================================
-   FOOTER - LAYOUT OTIMIZADO
+   FOOTER
 ================================================= */
 .footer {
     background: var(--green-gradient);
@@ -839,7 +839,7 @@ body {
 }
 
 /* =================================================
-   FOOTER BOTTOM - SEÇÃO MODERNIZADA
+   FOOTER BOTTOM
 ================================================= */
 .footer-bottom {
     background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
@@ -873,12 +873,87 @@ body {
 }
 
 /* =================================================
-   FOOTER - RESPONSIVIDADE MODERNIZADA
+   FOOTER - RESPONSIVIDADE
 ================================================= */
+/* Melhorias gerais para mobile */
 @media (max-width: 768px) {
-    .footer {
-        margin-top: 30px;
-        padding: 30px 0 0 0;
+    /* Ajustes no body para melhor performance */
+    body {
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+    }
+    
+    /* Hero section mobile */
+    .hero {
+        min-height: 60vh;
+        padding: 2rem 1rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: 0 1rem;
+    }
+    
+    .hero-icons {
+        margin-top: 2rem;
+        gap: 1rem;
+    }
+    
+    .hero-icon {
+        font-size: 2rem;
+    }
+    
+    /* Main content mobile */
+    .main-content {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    /* Cards mobile */
+    .card {
+        margin: 1rem 0;
+        padding: 1.5rem;
+        border-radius: 15px;
+    }
+    
+    /* Event info mobile */
+    .event-info {
+        padding: 1.5rem;
+    }
+    
+    .event-details {
+        gap: 1rem;
+    }
+    
+    .detail-item {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Gallery mobile optimizations */
+    .gallery-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        margin: 1rem 0;
+    }
+    
+    .gallery-wrapper {
+        touch-action: pan-x;
+        -webkit-overflow-scrolling: touch;
     }
     
     .footer-content {

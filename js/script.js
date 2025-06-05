@@ -1,18 +1,7 @@
-/**
- * ENCONTRO DE VARÕES 2025 - JAVASCRIPT PRINCIPAL
- * Arquivo: js/script.js
- * 
- * Este arquivo contém toda a lógica JavaScript limpa e otimizada
- */
-
 // =================================================
 // INICIALIZAÇÃO PRINCIPAL
 // =================================================
 
-/**
- * Event listener principal que inicializa todas as funcionalidades
- * quando o DOM estiver completamente carregado
- */
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Site carregado com sucesso!');
     

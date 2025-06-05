@@ -58,24 +58,32 @@
             <div class="event-details">
                 <div class="detail-item">
                     <span class="icon">📅</span>
-                    <strong>Data:</strong>
-                    Domingo, de 2025
+                    <div class="detail-content">
+                        <strong>Data:</strong>
+                        <span class="detail-text">Domingo, de 2025</span>
+                    </div>
                 </div>
                 <div class="detail-item">
                     <span class="icon">⏰</span>
-                    <strong>Horário:</strong>
-                    8h às 18h
+                    <div class="detail-content">
+                        <strong>Horário:</strong>
+                        <span class="detail-text">8h às 18h</span>
+                    </div>
                 </div>
                 <div class="detail-item">
                     <span class="icon">📍</span>
-                    <strong>Local:</strong>
-                    Igreja Semente Santa<br>
-                    <small>Endereço será informado</small>
+                    <div class="detail-content">
+                        <strong>Local:</strong>
+                        <span class="detail-text">Igreja Semente Santa<br>
+                        <small>Endereço será informado</small></span>
+                    </div>
                 </div>
                 <div class="detail-item">
                     <span class="icon">💰</span>
-                    <strong>Investimento:</strong>
-                    R$ 20,00
+                    <div class="detail-content">
+                        <strong>Investimento:</strong>
+                        <span class="detail-text">R$ 20,00</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,12 +132,14 @@
             <div class="video-container">
                 <div class="video-item">
                     <h4>🎥 Convite Oficial</h4>
-                    <iframe class="video-embed" 
-                            src="https://www.youtube.com/embed/VIDEO_ID_1" 
-                            title="Convite oficial para o Encontro de Varões 2025"
-                            frameborder="0" 
-                            allowfullscreen>
-                    </iframe>
+                    <div class="video-wrapper">
+                        <iframe class="video-embed" 
+                                src="https://www.youtube.com/embed/VIDEO_ID_1" 
+                                title="Convite oficial para o Encontro de Varões 2025"
+                                frameborder="0" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
                     <a href="https://www.youtube.com/watch?v=VIDEO_ID_1" class="video-link" target="_blank">
                         📺 Assistir no YouTube
                     </a>
@@ -137,12 +147,14 @@
                 
                 <div class="video-item">
                     <h4>🔥 Testemunho</h4>
-                    <iframe class="video-embed" 
-                            src="https://www.youtube.com/embed/VIDEO_ID_2" 
-                            title="Testemunho inspirador do encontro anterior"
-                            frameborder="0" 
-                            allowfullscreen>
-                    </iframe>
+                    <div class="video-wrapper">
+                        <iframe class="video-embed" 
+                                src="https://www.youtube.com/embed/VIDEO_ID_2" 
+                                title="Testemunho inspirador do encontro anterior"
+                                frameborder="0" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
                     <a href="https://www.youtube.com/watch?v=VIDEO_ID_2" class="video-link" target="_blank">
                         📺 Assistir no YouTube
                     </a>
@@ -153,46 +165,52 @@
         <!-- Contact Section -->
         <div class="contact-section">
             <h3>📞 FALE COM NOSSA EQUIPE</h3>
-            <p>Entre em contato para mais informações e inscrições:</p>
+            <p class="contact-intro">Entre em contato para mais informações e inscrições:</p>
             
             <div class="contacts-grid">
                 <div class="contact-item">
                     <div class="contact-photo">
                         <img src="images/contatos/pastor.jpg" alt="Foto do Pastor responsável pelo ministério de homens" class="contact-img">
                     </div>
-                    <span class="icon">👨‍💼</span>
-                    <h4>Pastor Responsável</h4>
-                    <p>Líder do Ministério de Homens</p>
-                    <a href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre o Encontro de Varões 2025" 
-                       class="whatsapp-btn" target="_blank">
-                        💬 WhatsApp
-                    </a>
+                    <div class="contact-info">
+                        <span class="icon">👨‍💼</span>
+                        <h4>Pastor Responsável</h4>
+                        <p>Líder do Ministério de Homens</p>
+                        <a href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre o Encontro de Varões 2025" 
+                           class="whatsapp-btn" target="_blank">
+                            💬 WhatsApp
+                        </a>
+                    </div>
                 </div>
 
                 <div class="contact-item">
                     <div class="contact-photo">
                         <img src="images/contatos/lider1.jpg" alt="Foto do líder coordenador de inscrições do evento" class="contact-img">
                     </div>
-                    <span class="icon">🤝</span>
-                    <h4>Líder</h4>
-                    <p>Coordenador de Inscrições</p>
-                    <a href="https://wa.me/5511888888888?text=Oi! Quero me inscrever no Encontro de Varões" 
-                       class="whatsapp-btn" target="_blank">
-                        💬 WhatsApp
-                    </a>
+                    <div class="contact-info">
+                        <span class="icon">🤝</span>
+                        <h4>Líder</h4>
+                        <p>Coordenador de Inscrições</p>
+                        <a href="https://wa.me/5511888888888?text=Oi! Quero me inscrever no Encontro de Varões" 
+                           class="whatsapp-btn" target="_blank">
+                            💬 WhatsApp
+                        </a>
+                    </div>
                 </div>
 
                 <div class="contact-item">
                     <div class="contact-photo">
                         <img src="images/contatos/lider2.jpg" alt="Foto do líder responsável pela organização do evento" class="contact-img">
                     </div>
-                    <span class="icon">📋</span>
-                    <h4>Líder</h4>
-                    <p>Organização do Evento</p>
-                    <a href="https://wa.me/5511777777777?text=Olá! Preciso de informações sobre o Encontro de Varões" 
-                       class="whatsapp-btn" target="_blank">
-                        💬 WhatsApp
-                    </a>
+                    <div class="contact-info">
+                        <span class="icon">📋</span>
+                        <h4>Líder</h4>
+                        <p>Organização do Evento</p>
+                        <a href="https://wa.me/5511777777777?text=Olá! Preciso de informações sobre o Encontro de Varões" 
+                           class="whatsapp-btn" target="_blank">
+                            💬 WhatsApp
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
