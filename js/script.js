@@ -47,9 +47,8 @@ function initSideBanners() {
      */
     function handleBannerScroll() {
         const scrollY = window.scrollY;
-        const shouldShow = scrollY > bannerStartPosition;
         const viewportWidth = window.innerWidth;
-        const containerMaxWidth = 900; // Valor do CSS --container-max-width
+        const viewportHeight = window.innerHeight;
         
         // Só mostra banners se houver espaço suficiente
         if (viewportWidth <= 1200) {
@@ -60,21 +59,14 @@ function initSideBanners() {
             return;
         }
         
-        // Calcula a posição do rodapé
+        // Calcula posições do footer
         const footer = document.querySelector('.footer');
-        const footerTop = footer ? footer.getBoundingClientRect().top + window.scrollY : document.body.scrollHeight;
-        const viewportHeight = window.innerHeight;
-        const scrollBottom = scrollY + viewportHeight;
+        const footerRect = footer.getBoundingClientRect();
+        const footerTop = footerRect.top + scrollY;
+        const footerVisible = footerRect.top < viewportHeight;
         
-        // Define a distância mínima do rodapé
-        const footerBuffer = 50;
-        let bottomOffset = 20;
-        
-        // Se o rodapé estiver próximo da viewport, ajusta o bottom dos banners
-        if (scrollBottom > footerTop - footerBuffer) {
-            const overlapAmount = scrollBottom - (footerTop - footerBuffer);
-            bottomOffset = Math.max(20, overlapAmount + footerBuffer);
-        }
+        // Verifica se deve mostrar os banners
+        const shouldShow = scrollY > bannerStartPosition && !footerVisible;
         
         if (shouldShow) {
             leftBanner.style.opacity = '1';
@@ -85,7 +77,6 @@ function initSideBanners() {
             // Define a posição top dinamicamente
             const topOffset = Math.max(20, bannerStartPosition - scrollY + 20);
             document.documentElement.style.setProperty('--banner-top-offset', `${topOffset}px`);
-            document.documentElement.style.setProperty('--banner-bottom-offset', `${bottomOffset}px`);
         } else {
             leftBanner.style.opacity = '0';
             rightBanner.style.opacity = '0';
@@ -149,8 +140,8 @@ function openBannerLink(side) {
     
     // URLs dos banners - substitua pelos links reais
     const bannerLinks = {
-        left: '#contato', // Link para seção de contato
-        right: '#inscricoes' // Link para inscrições
+        left: '#contact-section', // Link para seção de contato
+        right: '#video-section' // Link para seção de vídeos
     };
     
     if (bannerLinks[side] && bannerLinks[side] !== '#') {
