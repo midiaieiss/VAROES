@@ -13,7 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initDateCountdown();
     initSideBanners();
     initGallerySection();
+    initializeFooterLinks();
+    ensureFooterVisibility();
 });
+
+// =================================================
+// VARIÁVEIS GLOBAIS
+// =================================================
+
+let leftBanner, rightBanner, bannerStartPosition = 0;
+let scrollTicking = false;
 
 // =================================================
 // MÓDULO: SIDE BANNERS
@@ -21,95 +30,111 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Inicializa a funcionalidade dos banners laterais
- * Controla a opacidade baseada no scroll da página
  */
 function initSideBanners() {
-    const leftBanner = document.querySelector('.side-banner-left');
-    const rightBanner = document.querySelector('.side-banner-right');
+    leftBanner = document.querySelector('.side-banner-left');
+    rightBanner = document.querySelector('.side-banner-right');
     
-    // Verifica se os elementos existem antes de adicionar eventos
     if (!leftBanner || !rightBanner) {
         console.warn('Banners laterais não encontrados no DOM');
         return;
     }
     
-    // Calcula a posição inicial dos banners
+    calculateBannerPosition();
+    setupBannerScrollListener();
+    addBannerHoverEffects();
+    
+    // Executa uma vez no carregamento
+    handleBannerScroll();
+}
+
+/**
+ * Calcula a posição inicial dos banners
+ */
+function calculateBannerPosition() {
     const navbar = document.querySelector('.navbar');
     const hero = document.querySelector('.hero');
-    let bannerStartPosition = 0;
     
     if (navbar && hero) {
         bannerStartPosition = navbar.offsetHeight + hero.offsetHeight - 100;
     }
-    
-    /**
-     * Handler do evento scroll para controlar visibilidade dos banners
-     */
-    function handleBannerScroll() {
-        const scrollY = window.scrollY;
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
-        
-        // Só mostra banners se houver espaço suficiente
-        if (viewportWidth <= 1200) {
-            leftBanner.style.opacity = '0';
-            rightBanner.style.opacity = '0';
-            leftBanner.classList.remove('visible');
-            rightBanner.classList.remove('visible');
-            return;
-        }
-        
-        // Calcula posições do footer
-        const footer = document.querySelector('.footer');
-        const footerRect = footer.getBoundingClientRect();
-        const footerTop = footerRect.top + scrollY;
-        const footerVisible = footerRect.top < viewportHeight;
-        
-        // Verifica se deve mostrar os banners
-        const shouldShow = scrollY > bannerStartPosition && !footerVisible;
-        
-        if (shouldShow) {
-            leftBanner.style.opacity = '1';
-            rightBanner.style.opacity = '1';
-            leftBanner.classList.add('visible');
-            rightBanner.classList.add('visible');
-            
-            // Define a posição top dinamicamente
-            const topOffset = Math.max(20, bannerStartPosition - scrollY + 20);
-            document.documentElement.style.setProperty('--banner-top-offset', `${topOffset}px`);
-        } else {
-            leftBanner.style.opacity = '0';
-            rightBanner.style.opacity = '0';
-            leftBanner.classList.remove('visible');
-            rightBanner.classList.remove('visible');
-        }
-    }
-    
-    // Adiciona o event listener otimizado para scroll
-    let ticking = false;
+}
+
+/**
+ * Configura o listener de scroll otimizado
+ */
+function setupBannerScrollListener() {
     window.addEventListener('scroll', function() {
-        if (!ticking) {
+        if (!scrollTicking) {
             requestAnimationFrame(() => {
                 handleBannerScroll();
-                ticking = false;
+                scrollTicking = false;
             });
-            ticking = true;
+            scrollTicking = true;
         }
-    });
-    
-    // Executa uma vez no carregamento
-    handleBannerScroll();
+    }, { passive: true });
     
     // Recalcula posições no resize
     window.addEventListener('resize', function() {
-        if (navbar && hero) {
-            bannerStartPosition = navbar.offsetHeight + hero.offsetHeight - 100;
-            handleBannerScroll();
-        }
+        calculateBannerPosition();
+        handleBannerScroll();
+        ensureFooterVisibility();
     });
+}
+
+/**
+ * Controla a visibilidade dos banners baseado no scroll
+ */
+function handleBannerScroll() {
+    const scrollY = window.scrollY;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
     
-    // Adiciona hover effects para os banners laterais
-    addBannerHoverEffects();
+    // Não mostra banners em telas pequenas
+    if (viewportWidth <= 1200) {
+        hideBanners();
+        return;
+    }
+    
+    // Verifica se deve mostrar os banners
+    const shouldShow = scrollY > bannerStartPosition;
+    
+    // Verifica se o footer está visível
+    const footer = document.querySelector('.footer');
+    const shouldHideForFooter = footer && footer.getBoundingClientRect().top < viewportHeight + 50;
+    
+    if (shouldShow && !shouldHideForFooter) {
+        showBanners(scrollY);
+    } else {
+        hideBanners();
+    }
+}
+
+/**
+ * Mostra os banners com posicionamento correto
+ */
+function showBanners(scrollY) {
+    const topOffset = Math.max(20, bannerStartPosition - scrollY + 20);
+    
+    leftBanner.style.opacity = '1';
+    rightBanner.style.opacity = '1';
+    leftBanner.classList.add('visible');
+    rightBanner.classList.add('visible');
+    
+    document.documentElement.style.setProperty('--banner-top-offset', `${topOffset}px`);
+    document.documentElement.style.setProperty('--banner-bottom-offset', '20px');
+}
+
+/**
+ * Esconde os banners
+ */
+function hideBanners() {
+    if (leftBanner && rightBanner) {
+        leftBanner.style.opacity = '0';
+        rightBanner.style.opacity = '0';
+        leftBanner.classList.remove('visible');
+        rightBanner.classList.remove('visible');
+    }
 }
 
 /**
@@ -133,35 +158,103 @@ function addBannerHoverEffects() {
 
 /**
  * Handler para cliques nos banners laterais
- * @param {string} side - Lado do banner ('left' ou 'right')
  */
 function openBannerLink(side) {
     console.log(`Banner ${side} clicado`);
     
-    // URLs dos banners - substitua pelos links reais
     const bannerLinks = {
-        left: '#contact-section', // Link para seção de contato
-        right: '#video-section' // Link para seção de vídeos
+        left: '#contato',
+        right: '#inscricoes'
     };
     
-    if (bannerLinks[side] && bannerLinks[side] !== '#') {
-        // Se for um link interno, faz scroll suave
-        if (bannerLinks[side].startsWith('#')) {
-            const targetElement = document.querySelector(bannerLinks[side]);
-            if (targetElement) {
-                targetElement.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            }
-        } else {
-            window.open(bannerLinks[side], '_blank');
+    const link = bannerLinks[side];
+    if (!link || link === '#') return;
+    
+    if (link.startsWith('#')) {
+        const targetElement = document.querySelector(link);
+        if (targetElement) {
+            targetElement.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
         }
+    } else {
+        window.open(link, '_blank');
     }
 }
 
-// Torna a função global para uso no HTML (onclick)
+// Função global para uso no HTML
 window.openBannerLink = openBannerLink;
+
+// =================================================
+// MÓDULO: FOOTER
+// =================================================
+
+/**
+ * Inicializa os links do footer
+ */
+function initializeFooterLinks() {
+    initMapLink();
+    initSocialLinks();
+}
+
+/**
+ * Inicializa o link do mapa
+ */
+function initMapLink() {
+    const footerMapLink = document.querySelector('.footer-map-link');
+    if (!footerMapLink) return;
+    
+    footerMapLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const mapsUrl = 'https://www.google.com/maps/place/R.+dos+Estudantes,+77+-+Centro,+Palmas+-+TO,+77001-014/@-10.1693495,-48.3318892,17z/data=!3m1!4b1!4m6!3m5!1s0x933b33b4cf4c2ff5:0x7c4c4c4c4c4c4c4c!8m2!3d-10.1693495!4d-48.3318892!16s%2Fg%2F11c4c4c4c4';
+        window.open(mapsUrl, '_blank', 'noopener,noreferrer');
+    });
+}
+
+/**
+ * Inicializa os links das redes sociais
+ */
+function initSocialLinks() {
+    const socialLinks = document.querySelectorAll('.social-link');
+    
+    socialLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const urls = {
+                'instagram-link': 'https://www.instagram.com/suaigreja/',
+                'youtube-link': 'https://www.youtube.com/@suaigreja'
+            };
+            
+            const url = Object.keys(urls).find(className => this.classList.contains(className));
+            if (url && urls[url]) {
+                window.open(urls[url], '_blank', 'noopener,noreferrer');
+            }
+        });
+    });
+}
+
+/**
+ * Garante que o footer seja sempre visível e clicável
+ */
+function ensureFooterVisibility() {
+    const footer = document.querySelector('.footer');
+    if (!footer) return;
+    
+    footer.style.position = 'relative';
+    footer.style.zIndex = '100';
+    
+    const footerElements = footer.querySelectorAll('a, button, iframe');
+    footerElements.forEach(element => {
+        element.style.position = 'relative';
+        element.style.zIndex = '101';
+        element.style.pointerEvents = 'auto';
+    });
+}
 
 // =================================================
 // MÓDULO: GALERIA
@@ -172,62 +265,21 @@ window.openBannerLink = openBannerLink;
  */
 function initGallerySection() {
     createGallerySection();
-    setupGalleryNavigation();
+    setTimeout(() => setupGalleryNavigation(), 100);
 }
 
 /**
- * Cria a estrutura da galeria de acordo com o CSS
+ * Cria a estrutura HTML da galeria
  */
 function createGallerySection() {
     const mainContent = document.querySelector('.main-content');
-    if (!mainContent) return;
+    if (!mainContent || document.querySelector('.gallery-section')) return;
     
-    // Verifica se a galeria já existe
-    if (document.querySelector('.gallery-section')) return;
-    
-    // Cria a seção da galeria seguindo o padrão do CSS
     const gallerySection = document.createElement('div');
     gallerySection.className = 'card gallery-section';
     gallerySection.id = 'gallery-section';
+    gallerySection.innerHTML = getGalleryHTML();
     
-    gallerySection.innerHTML = `
-        <h2>🖼️ GALERIA DO EVENTO</h2>
-        <div class="gallery-container">
-            <button class="gallery-nav gallery-prev" aria-label="Imagem anterior">‹</button>
-            <div class="gallery-wrapper">
-                <div class="gallery-track" id="galleryTrack">
-                    <div class="gallery-item">
-                        <img src="images/gallery/evento1.jpg" alt="Encontro de Varões 2024 - Momento de oração coletiva" class="gallery-image" loading="lazy">
-                        <div class="gallery-caption">Oração Coletiva</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/gallery/evento2.jpg" alt="Encontro de Varões 2024 - Louvor e adoração" class="gallery-image" loading="lazy">
-                        <div class="gallery-caption">Louvor & Adoração</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/gallery/evento3.jpg" alt="Encontro de Varões 2024 - Pregação da Palavra" class="gallery-image" loading="lazy">
-                        <div class="gallery-caption">Pregação da Palavra</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/gallery/evento4.jpg" alt="Encontro de Varões 2024 - Confraternização entre irmãos" class="gallery-image" loading="lazy">
-                        <div class="gallery-caption">Confraternização</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/gallery/evento5.jpg" alt="Encontro de Varões 2024 - Momento de testemunho" class="gallery-image" loading="lazy">
-                        <div class="gallery-caption">Testemunhos</div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="images/gallery/evento6.jpg" alt="Encontro de Varões 2024 - Foto oficial do grupo" class="gallery-image" loading="lazy">
-                        <div class="gallery-caption">Foto Oficial</div>
-                    </div>
-                </div>
-            </div>
-            <button class="gallery-nav gallery-next" aria-label="Próxima imagem">›</button>
-        </div>
-        <div class="gallery-dots" id="galleryDots"></div>
-    `;
-    
-    // Insere a galeria antes da seção de contatos
     const contactSection = document.querySelector('.contact-section');
     if (contactSection) {
         mainContent.insertBefore(gallerySection, contactSection);
@@ -237,99 +289,101 @@ function createGallerySection() {
 }
 
 /**
- * Configura a navegação da galeria
+ * Retorna o HTML da galeria
  */
-function setupGalleryNavigation() {
-    setTimeout(() => {
-        const track = document.getElementById('galleryTrack');
-        const prevBtn = document.querySelector('.gallery-prev');
-        const nextBtn = document.querySelector('.gallery-next');
-        const dotsContainer = document.getElementById('galleryDots');
-        
-        if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
-        
-        const items = document.querySelectorAll('.gallery-item');
-        let currentIndex = 0;
-        let isAnimating = false;
-        
-        // Cria os dots
-        items.forEach((_, index) => {
-            const dot = document.createElement('button');
-            dot.className = `gallery-dot ${index === 0 ? 'active' : ''}`;
-            dot.setAttribute('data-index', index);
-            dot.addEventListener('click', () => goToSlide(index));
-            dotsContainer.appendChild(dot);
-        });
-        
-        // Função para ir para slide específico
-        function goToSlide(index) {
-            if (isAnimating) return;
-            
-            isAnimating = true;
-            currentIndex = index;
-            
-            // Move o track
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
-            // Atualiza dots
-            const dots = document.querySelectorAll('.gallery-dot');
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
-            
-            setTimeout(() => {
-                isAnimating = false;
-            }, 500);
-        }
-        
-        // Navegação com botões
-        prevBtn.addEventListener('click', () => {
-            const newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-            goToSlide(newIndex);
-        });
-        
-        nextBtn.addEventListener('click', () => {
-            const newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-            goToSlide(newIndex);
-        });
-        
-        // Auto-play
-        setupGalleryAutoPlay(goToSlide, items.length);
-        
-        // Touch support
-        addGalleryTouchSupport(track, goToSlide, items.length);
-        
-    }, 100);
+function getGalleryHTML() {
+    const images = [
+        { src: 'evento1.jpg', alt: 'Momento de oração coletiva', caption: 'Oração Coletiva' },
+        { src: 'evento2.jpg', alt: 'Louvor e adoração', caption: 'Louvor & Adoração' },
+        { src: 'evento3.jpg', alt: 'Pregação da Palavra', caption: 'Pregação da Palavra' },
+        { src: 'evento4.jpg', alt: 'Confraternização entre irmãos', caption: 'Confraternização' },
+        { src: 'evento5.jpg', alt: 'Momento de testemunho', caption: 'Testemunhos' },
+        { src: 'evento6.jpg', alt: 'Foto oficial do grupo', caption: 'Foto Oficial' }
+    ];
+    
+    const imageItems = images.map(img => `
+        <div class="gallery-item">
+            <img src="images/gallery/${img.src}" alt="Encontro de Varões 2024 - ${img.alt}" class="gallery-image" loading="lazy">
+            <div class="gallery-caption">${img.caption}</div>
+        </div>
+    `).join('');
+    
+    return `
+        <h2>🖼️ GALERIA DO EVENTO</h2>
+        <div class="gallery-container">
+            <button class="gallery-nav gallery-prev" aria-label="Imagem anterior">‹</button>
+            <div class="gallery-wrapper">
+                <div class="gallery-track" id="galleryTrack">${imageItems}</div>
+            </div>
+            <button class="gallery-nav gallery-next" aria-label="Próxima imagem">›</button>
+        </div>
+        <div class="gallery-dots" id="galleryDots"></div>
+    `;
 }
 
 /**
- * Configura o auto-play da galeria
+ * Configura toda a navegação da galeria
  */
-function setupGalleryAutoPlay(goToSlideCallback, totalSlides) {
+function setupGalleryNavigation() {
+    const elements = getGalleryElements();
+    if (!elements) return;
+    
+    const { track, prevBtn, nextBtn, dotsContainer, items } = elements;
     let currentIndex = 0;
+    let isAnimating = false;
     let autoPlayInterval;
-    const autoPlayDelay = 5000; // 5 segundos
     
-    function startAutoPlay() {
-        autoPlayInterval = setInterval(() => {
-            currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
-            goToSlideCallback(currentIndex);
-        }, autoPlayDelay);
+    // Cria os dots de navegação
+    createGalleryDots(dotsContainer, items.length, goToSlide);
+    
+    // Função principal de navegação
+    function goToSlide(index) {
+        if (isAnimating) return;
+        
+        isAnimating = true;
+        currentIndex = index;
+        
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateGalleryDots(currentIndex);
+        
+        setTimeout(() => { isAnimating = false; }, 500);
     }
     
-    function stopAutoPlay() {
-        if (autoPlayInterval) {
-            clearInterval(autoPlayInterval);
+    // Event listeners dos botões
+    prevBtn.addEventListener('click', () => {
+        const newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+        goToSlide(newIndex);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        const newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+        goToSlide(newIndex);
+    });
+    
+    // Configura funcionalidades adicionais
+    setupGalleryAutoPlay();
+    setupGalleryTouchSupport(track);
+    
+    // Funções internas para auto-play
+    function setupGalleryAutoPlay() {
+        const galleryContainer = document.querySelector('.gallery-container');
+        if (!galleryContainer) return;
+        
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+                goToSlide(currentIndex);
+            }, 5000);
         }
-    }
-    
-    const galleryContainer = document.querySelector('.gallery-container');
-    if (galleryContainer) {
+        
+        function stopAutoPlay() {
+            if (autoPlayInterval) clearInterval(autoPlayInterval);
+        }
+        
         galleryContainer.addEventListener('mouseenter', stopAutoPlay);
         galleryContainer.addEventListener('mouseleave', startAutoPlay);
         startAutoPlay();
         
-        // Para quando a aba não está visível
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 stopAutoPlay();
@@ -338,121 +392,131 @@ function setupGalleryAutoPlay(goToSlideCallback, totalSlides) {
             }
         });
     }
-}
-
-/**
- * Adiciona suporte a touch/swipe para a galeria
- */
-function addGalleryTouchSupport(track, goToSlideCallback, totalSlides) {
-    let startX = 0;
-    let currentIndex = 0;
-    let isDragging = false;
     
-    track.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        isDragging = true;
-    }, { passive: true });
-    
-    track.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
+    // Touch support
+    function setupGalleryTouchSupport(track) {
+        let startX = 0;
+        let isDragging = false;
         
-        const currentX = e.touches[0].clientX;
-        const diffX = startX - currentX;
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        }, { passive: true });
         
-        // Previne scroll se movimento horizontal for maior
-        if (Math.abs(diffX) > 30) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-    
-    track.addEventListener('touchend', (e) => {
-        if (!isDragging) return;
+        track.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const diffX = Math.abs(startX - e.touches[0].clientX);
+            if (diffX > 30) e.preventDefault();
+        }, { passive: false });
         
-        const endX = e.changedTouches[0].clientX;
-        const diffX = startX - endX;
-        const threshold = 50;
-        
-        if (Math.abs(diffX) > threshold) {
-            if (diffX > 0) {
-                // Swipe left - próximo
-                currentIndex = currentIndex < totalSlides - 1 ? currentIndex + 1 : 0;
-            } else {
-                // Swipe right - anterior
-                currentIndex = currentIndex > 0 ? currentIndex - 1 : totalSlides - 1;
+        track.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    currentIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+                } else {
+                    currentIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+                }
+                goToSlide(currentIndex);
             }
-            goToSlideCallback(currentIndex);
-        }
-        
-        isDragging = false;
-    }, { passive: true });
+            
+            isDragging = false;
+        }, { passive: true });
+    }
+}
+
+/**
+ * Obtém os elementos da galeria
+ */
+function getGalleryElements() {
+    const track = document.getElementById('galleryTrack');
+    const prevBtn = document.querySelector('.gallery-prev');
+    const nextBtn = document.querySelector('.gallery-next');
+    const dotsContainer = document.getElementById('galleryDots');
+    const items = document.querySelectorAll('.gallery-item');
+    
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) return null;
+    
+    return { track, prevBtn, nextBtn, dotsContainer, items };
+}
+
+/**
+ * Cria os dots de navegação
+ */
+function createGalleryDots(container, count, callback) {
+    for (let i = 0; i < count; i++) {
+        const dot = document.createElement('button');
+        dot.className = `gallery-dot ${i === 0 ? 'active' : ''}`;
+        dot.setAttribute('data-index', i);
+        dot.addEventListener('click', () => callback(i));
+        container.appendChild(dot);
+    }
+}
+
+/**
+ * Atualiza os dots ativos
+ */
+function updateGalleryDots(activeIndex) {
+    const dots = document.querySelectorAll('.gallery-dot');
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeIndex);
+    });
 }
 
 // =================================================
-// MÓDULO: ANIMAÇÕES DE SCROLL
+// MÓDULO: ANIMAÇÕES E INTERAÇÕES
 // =================================================
 
 /**
- * Inicializa as animações baseadas em scroll usando Intersection Observer
+ * Inicializa as animações de scroll
  */
 function initScrollAnimations() {
-    const observerConfig = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observerCallback = (entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
                 observer.unobserve(entry.target);
             }
         });
-    };
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
     
-    const observer = new IntersectionObserver(observerCallback, observerConfig);
-    
-    // Observa todos os elementos que devem ser animados
     const elementsToAnimate = document.querySelectorAll(
         '.card, .event-info, .contact-section, .final-cta, .gallery-section'
     );
     
-    elementsToAnimate.forEach(element => {
-        observer.observe(element);
-    });
+    elementsToAnimate.forEach(element => observer.observe(element));
 }
-
-// =================================================
-// MÓDULO: LAZY LOADING DE IMAGENS
-// =================================================
 
 /**
  * Implementa lazy loading para imagens
  */
 function initImageLazyLoading() {
-    const imageCallback = (entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
                 
-                // Para imagens com data-src
                 if (img.dataset.src) {
                     img.src = img.dataset.src;
                     img.classList.remove('lazy');
-                    imageObserver.unobserve(img);
                 }
                 
-                // Para imagens da galeria
                 if (img.classList.contains('gallery-image')) {
                     img.style.opacity = '1';
-                    imageObserver.unobserve(img);
                 }
+                
+                observer.unobserve(img);
             }
         });
-    };
+    });
     
-    const imageObserver = new IntersectionObserver(imageCallback);
-    
-    // Observa todas as imagens lazy
     const lazyImages = document.querySelectorAll('img[data-src], .gallery-image');
     lazyImages.forEach(img => {
         if (img.classList.contains('gallery-image') && !img.hasAttribute('loading')) {
@@ -460,13 +524,9 @@ function initImageLazyLoading() {
             img.style.opacity = '0';
             img.style.transition = 'opacity 0.3s ease';
         }
-        imageObserver.observe(img);
+        observer.observe(img);
     });
 }
-
-// =================================================
-// MÓDULO: WHATSAPP TRACKING
-// =================================================
 
 /**
  * Adiciona tracking aos botões do WhatsApp
@@ -475,21 +535,14 @@ function initWhatsAppTracking() {
     const whatsappButtons = document.querySelectorAll('.whatsapp-btn');
     
     whatsappButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
+        button.addEventListener('click', function() {
             console.log('WhatsApp button clicked:', this.href);
             
-            // Feedback visual
             this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
+            setTimeout(() => { this.style.transform = ''; }, 150);
         });
     });
 }
-
-// =================================================
-// MÓDULO: VÍDEO INTERACTIONS
-// =================================================
 
 /**
  * Adiciona interatividade aos links de vídeo
@@ -498,14 +551,11 @@ function initVideoInteractions() {
     const videoLinks = document.querySelectorAll('.video-link');
     
     videoLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
+        link.addEventListener('click', function() {
             console.log('Video link clicked:', this.href);
             
-            // Feedback visual
             this.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 100);
+            setTimeout(() => { this.style.transform = ''; }, 100);
         });
     });
 }
@@ -515,11 +565,11 @@ function initVideoInteractions() {
 // =================================================
 
 /**
- * Inicializa o contador regressivo para o evento
+ * Inicializa o contador regressivo
  */
 function initDateCountdown() {
-    // Data do evento - 01 de junho de 2025 às 8h
     const eventDate = new Date('2025-06-01T08:00:00');
+    let countdownInterval;
     
     function updateCountdown() {
         const now = new Date();
@@ -527,6 +577,7 @@ function initDateCountdown() {
         
         if (timeLeft <= 0) {
             displayEventPassed();
+            if (countdownInterval) clearInterval(countdownInterval);
             return;
         }
         
@@ -584,25 +635,12 @@ function initDateCountdown() {
         }
     }
     
-    // Executa a primeira atualização
     updateCountdown();
-    
-    // Configura atualização automática a cada minuto
-    const countdownInterval = setInterval(() => {
-        const now = new Date();
-        const timeLeft = eventDate - now;
-        
-        if (timeLeft <= 0) {
-            clearInterval(countdownInterval);
-            displayEventPassed();
-        } else {
-            updateCountdown();
-        }
-    }, 60000);
+    countdownInterval = setInterval(updateCountdown, 60000);
 }
 
 // =================================================
 // LOG DE INICIALIZAÇÃO
 // =================================================
 
-console.log('Site totalmente carregado!');
+console.log('Site totalmente carregado');

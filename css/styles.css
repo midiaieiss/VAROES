@@ -1136,49 +1136,74 @@ body {
 }
 
 /* =================================================
-   FOOTER - CORREÇÃO DO MAPA
+   FOOTER - SEÇÃO DO MAPA - CORREÇÃO
 ================================================= */
+.footer-map-section {
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    text-align: left !important;
+}
+
+.footer-map-title {
+    color: var(--accent-yellow) !important;
+    font-size: clamp(20px, 3.5vw, 24px) !important;
+    font-weight: 800 !important;
+    margin-bottom: clamp(12px, 2vw, 16px) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    text-shadow: var(--text-shadow) !important;
+    text-align: left !important;
+}
+
 .footer-map-container {
-    width: 100%;
-    height: clamp(200px, 25vw, 280px);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    border: 3px solid var(--accent-green);
-    position: relative;
-    background: rgba(26, 76, 26, 0.2);
+    width: 100% !important;
+    height: clamp(200px, 25vw, 280px) !important;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+    border: 3px solid var(--accent-green) !important;
+    position: relative !important;
+    background: rgba(26, 76, 26, 0.2) !important;
+    margin-left: 0 !important;
 }
 
-.footer-map-link {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--yellow-gradient);
-    color: var(--dark-black);
-    padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px);
-    border-radius: clamp(15px, 2.5vw, 20px);
-    font-size: clamp(11px, 1.8vw, 13px);
-    font-weight: 800;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    z-index: 10;
-    transition: var(--transition);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+.footer-map-container .footer-map-link {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    left: auto !important;
+    background: var(--yellow-gradient) !important;
+    color: var(--dark-black) !important;
+    padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px) !important;
+    border-radius: clamp(15px, 2.5vw, 20px) !important;
+    font-size: clamp(11px, 1.8vw, 13px) !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    z-index: 999 !important;
+    transition: var(--transition) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
 }
 
-.footer-map-link:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-yellow);
+.footer-map-container .footer-map-link:hover {
+    transform: scale(1.05) !important;
+    box-shadow: var(--shadow-yellow) !important;
 }
 
-.footer-map-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: var(--border-radius);
-    position: relative;
-    z-index: 1;
+.footer-map-container .footer-map-iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: var(--border-radius) !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
 }
 
 /* =================================================
