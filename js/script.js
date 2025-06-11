@@ -226,8 +226,8 @@ function initSocialLinks() {
             e.stopPropagation();
             
             const urls = {
-                'instagram-link': 'https://www.instagram.com/suaigreja/',
-                'youtube-link': 'https://www.youtube.com/@suaigreja'
+                'instagram-link': 'https://www.instagram.com/igreja.ss/?igsh=MWRpbWR2dDF3dHJ2cg%3D%3D#',
+                'youtube-link': 'https://youtube.com/@vidaacomcristo?si=NS2ipz18OAZ6yVka'
             };
             
             const url = Object.keys(urls).find(className => this.classList.contains(className));
