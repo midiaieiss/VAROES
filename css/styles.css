@@ -853,57 +853,33 @@ body {
 /* =================================================
    FOOTER - SEÇÃO DE REDES SOCIAIS
 ================================================= */
-.footer-social-section {
-    margin-top: clamp(25px, 4vw, 35px);
-    padding-top: clamp(20px, 3vw, 25px);
-    border-top: 2px solid var(--accent-green); /* Mesma cor verde do corpo */
-}
-
-.footer-social-title {
-    color: var(--accent-yellow);
-    font-size: clamp(18px, 3vw, 22px);
-    font-weight: 900;
-    margin-bottom: clamp(15px, 2.5vw, 20px);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: var(--text-shadow);
-    text-align: left;
-}
-
-.footer-social-links {
-    display: flex;
-    gap: clamp(15px, 3vw, 20px);
-    flex-wrap: wrap;
-}
-
 .social-link {
     display: flex;
     align-items: center;
     justify-content: center;
     width: clamp(50px, 8vw, 60px);
     height: clamp(50px, 8vw, 60px);
-    background: var(--dark-gradient);
+    background: var(--dark-gradient); /* Background padrão */
     border-radius: 50%;
     text-decoration: none;
-    color: var(--text-white);
+    color: white;
     font-size: clamp(24px, 4vw, 28px);
-    border: 2px solid var(--accent-green); /* Mesma cor verde do corpo */
+    border: 2px solid var(--accent-green);
     transition: var(--transition);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
-    overflow: hidden;
 }
 
-.social-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    transition: var(--transition);
-    z-index: 1;
+/* Instagram - background sempre visível */
+.instagram-link {
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%) !important;
+    color: white !important;
+}
+
+/* YouTube - background sempre visível */
+.youtube-link {
+    background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%) !important;
+    color: white !important;
 }
 
 .social-link:hover {
@@ -912,23 +888,9 @@ body {
     border-color: var(--accent-yellow);
 }
 
-.instagram-link:hover::before {
-    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
-}
-
-.youtube-link:hover::before {
-    background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
-}
-
 .social-icon {
-    position: relative;
-    z-index: 2;
-    transition: var(--transition);
-}
-
-.instagram-link:hover .social-icon,
-.youtube-link:hover .social-icon {
     color: white;
+    transition: var(--transition);
 }
 
 /* =================================================
